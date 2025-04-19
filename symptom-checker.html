@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Checker - MediScan AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <span class="logo-text">Medi<span class="highlight">Scan</span> AI</span>
+                </a>
+            </div>
+            <nav>
+                <div class="hamburger-menu">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="symptom-checker.html" class="active">Symptom Checker</a></li>
+                    <li><a href="blog.html">Health Blog</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="privacy-policy.html">Privacy</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Symptom Checker</h1>
+            <p>Describe your symptoms to receive potential diagnoses and medical advice</p>
+        </div>
+    </section>
+
+    <section class="symptom-checker">
+        <div class="container">
+            <div class="disclaimer-box">
+                <div class="disclaimer-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="disclaimer-content">
+                    <h3>Important Health Disclaimer</h3>
+                    <p>MediScan AI is designed to provide information only and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+                </div>
+            </div>
+
+            <div class="checker-wrapper">
+                <div class="progress-tracker">
+                    <div class="progress-step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Basic Info</div>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Symptoms</div>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Medical History</div>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Results</div>
+                    </div>
+                </div>
+
+                <div class="checker-form-container">
+                    <!-- Step 1: Basic Information -->
+                    <form id="symptom-form" class="checker-form active" data-step="1">
+                        <h2>Basic Information</h2>
+                        <p>Please provide some basic information to help us understand your situation better.</p>
+                        
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" min="1" max="120" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Biological Sex</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="sex" value="male" required>
+                                    <span class="radio-label">Male</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="sex" value="female">
+                                    <span class="radio-label">Female</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="sex" value="other">
+                                    <span class="radio-label">Other</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="height">Height (cm)</label>
+                            <input type="number" id="height" name="height" min="50" max="250">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" name="weight" min="1" max="500">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn primary-btn" id="step1-next">Continue</button>
+                        </div>
+                    </form>
+
+                    <!-- Step 2: Symptoms Selection -->
+                    <form class="checker-form" data-step="2">
+                        <h2>Your Symptoms</h2>
+                        <p>Select all symptoms you're experiencing and rate their severity.</p>
+                        
+                        <div class="search-symptoms">
+                            <label for="symptom-search">Search for symptoms:</label>
+                            <div class="search-container">
+                                <input type="text" id="symptom-search" placeholder="Type to search symptoms...">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="symptom-suggestions" id="symptom-suggestions">
+                                <!-- Dynamically populated via JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <div class="selected-symptoms">
+                            <h3>Selected Symptoms</h3>
+                            <div id="selected-symptoms-list">
+                                <!-- Example of how a selected symptom would appear -->
+                                <div class="symptom-item">
+                                    <div class="symptom-name">Headache</div>
+                                    <div class="symptom-severity">
+                                        <label class="severity-label">
+                                            <input type="radio" name="severity-headache" value="mild" checked>
+                                            <span>Mild</span>
+                                        </label>
+                                        <label class="severity-label">
+                                            <input type="radio" name="severity-headache" value="moderate">
+                                            <span>Moderate</span>
+                                        </label>
+                                        <label class="severity-label">
+                                            <input type="radio" name="severity-headache" value="severe">
+                                            <span>Severe</span>
+                                        </label>
+                                    </div>
+                                    <div class="symptom-duration">
+                                        <select name="duration-headache">
+                                            <option value="hours">Hours</option>
+                                            <option value="days">Days</option>
+                                            <option value="weeks">Weeks</option>
+                                            <option value="months">Months</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="remove-symptom"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                                                
+                        <div class="symptom-details">
+                            <h3>Additional Details</h3>
+                            <div class="form-group">
+                                <label for="symptom-onset">When did your symptoms begin?</label>
+                                <select id="symptom-onset" name="symptom-onset">
+                                    <option value="today">Today</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="few-days">Few days ago</option>
+                                    <option value="week">About a week ago</option>
+                                    <option value="weeks">Several weeks ago</option>
+                                    <option value="month">More than a month ago</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="additional-notes">Any additional information about your symptoms?</label>
+                                <textarea id="additional-notes" name="additional-notes" rows="3" placeholder="Add any details that might be relevant..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary-btn" id="step2-back">Back</button>
+                            <button type="button" class="btn primary-btn" id="step2-next">Continue</button>
+                        </div>
+                    </form>
+
+                    <!-- Step 3: Medical History -->
+                    <form class="checker-form" data-step="3">
+                        <h2>Medical History</h2>
+                        <p>Please provide information about your medical history to help improve the accuracy of results.</p>
+                        
+                        <div class="form-group">
+                            <label>Do you have any known medical conditions?</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="conditions" value="diabetes">
+                                    <span>Diabetes</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="conditions" value="hypertension">
+                                    <span>Hypertension</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="conditions" value="heart-disease">
+                                    <span>Heart Disease</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="conditions" value="asthma">
+                                    <span>Asthma</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="conditions" value="thyroid">
+                                    <span>Thyroid Disorder</span>
+                                </label>
+                                <label class="checkbox-option">
+                                    <input type="checkbox" name="conditions" value="other-condition">
+                                    <span>Other</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="other-condition-group" style="display: none;">
+                            <label for="other-condition">Please specify other conditions:</label>
+                            <textarea id="other-condition" name="other-condition" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Are you currently taking any medications?</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="medications" value="yes">
+                                    <span class="radio-label">Yes</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="medications" value="no">
+                                    <span class="radio-label">No</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="medications-list-group" style="display: none;">
+                            <label for="medications-list">Please list your medications:</label>
+                            <textarea id="medications-list" name="medications-list" rows="3" placeholder="Medication names and dosages if known..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Any known allergies?</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="allergies" value="yes">
+                                    <span class="radio-label">Yes</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="allergies" value="no">
+                                    <span class="radio-label">No</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="allergies-list-group" style="display: none;">
+                            <label for="allergies-list">Please list your allergies:</label>
+                            <textarea id="allergies-list" name="allergies-list" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="family-history">Relevant family medical history:</label>
+                            <textarea id="family-history" name="family-history" rows="3" placeholder="Any medical conditions that run in your family..."></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn secondary-btn" id="step3-back">Back</button>
+                            <button type="button" class="btn primary-btn" id="step3-next">Get Results</button>
+                        </div>
+                    </form>
+
+                    <!-- Step 4: Results (initially hidden, shown after form submission) -->
+                    <div class="checker-results" data-step="4">
+                        <div class="results-loading">
+                            <div class="spinner"></div>
+                            <p>Analyzing your symptoms...</p>
+                        </div>
+                        
+                        <div class="results-content" style="display: none;">
+                            <h2>Your Assessment Results</h2>
+                            <p class="results-timestamp">Generated on <span id="result-date">March 26, 2025</span></p>
+                            
+                            <div class="results-disclaimer">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>This assessment is based on the information you provided and should not be considered a medical diagnosis. Please consult with a healthcare professional for proper evaluation.</p>
+                            </div>
+                            
+                            <div class="possible-conditions">
+                                <h3>Possible Conditions</h3>
+                                
+                                <div class="condition-card primary-match">
+                                    <div class="condition-header">
+                                        <h4>Common Cold</h4>
+                                        <div class="confidence-level">
+                                            <div class="confidence-label">High Match</div>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" style="width: 85%"></div>
+                                            </div>
+                                            <div class="confidence-percentage">85%</div>
+                                        </div>
+                                    </div>
+                                    <div class="condition-description">
+                                        <p>A viral infection of your nose and throat (upper respiratory tract). It's usually harmless, although it might not feel that way.</p>
+                                    </div>
+                                    <div class="matched-symptoms">
+                                        <h5>Matching Symptoms</h5>
+                                        <ul>
+                                            <li>Headache</li>
+                                            <li>Sore throat</li>
+                                            <li>Runny nose</li>
+                                            <li>Fever</li>
+                                        </ul>
+                                    </div>
+                                    <div class="condition-recommendations">
+                                        <h5>Recommendations</h5>
+                                        <ul>
+                                            <li>Rest and stay hydrated</li>
+                                            <li>Over-the-counter medications may help relieve symptoms</li>
+                                            <li>Seek medical attention if symptoms worsen or persist beyond 10 days</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="condition-card secondary-match">
+                                    <div class="condition-header">
+                                        <h4>Seasonal Allergies</h4>
+                                        <div class="confidence-level">
+                                            <div class="confidence-label">Moderate Match</div>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" style="width: 60%"></div>
+                                            </div>
+                                            <div class="confidence-percentage">60%</div>
+                                        </div>
+                                    </div>
+                                    <div class="condition-description">
+                                        <p>An immune system reaction that occurs when you inhale allergens like pollen, resulting in rhinitis and other symptoms.</p>
+                                    </div>
+                                    <div class="matched-symptoms">
+                                        <h5>Matching Symptoms</h5>
+                                        <ul>
+                                            <li>Runny nose</li>
+                                            <li>Sneezing</li>
+                                            <li>Itchy, watery eyes</li>
+                                            <li>Nasal congestion</li>
+                                        </ul>
+                                    </div>
+                                    <div class="condition-recommendations">
+                                        <h5>Recommendations</h5>
+                                        <ul>
+                                            <li>Try over-the-counter antihistamines</li>
+                                            <li>Avoid known allergens when possible</li>
+                                            <li>Consult with an allergist for testing if symptoms are recurrent</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="condition-card tertiary-match">
+                                    <div class="condition-header">
+                                        <h4>Sinusitis</h4>
+                                        <div class="confidence-level">
+                                            <div class="confidence-label">Lower Match</div>
+                                            <div class="confidence-bar">
+                                                <div class="confidence-fill" style="width: 35%"></div>
+                                            </div>
+                                            <div class="confidence-percentage">35%</div>
+                                        </div>
+                                    </div>
+                                    <div class="condition-description">
+                                        <p>Inflammation of the sinuses, which are air-filled spaces behind your forehead, cheeks, and eyes.</p>
+                                    </div>
+                                    <div class="matched-symptoms">
+                                        <h5>Matching Symptoms</h5>
+                                        <ul>
+                                            <li>Headache</li>
+                                            <li>Nasal congestion</li>
+                                            <li>Facial pressure</li>
+                                        </ul>
+                                    </div>
+                                    <div class="condition-recommendations">
+                                        <h5>Recommendations</h5>
+                                        <ul>
+                                            <li>Saline nasal irrigation may help relieve symptoms</li>
+                                            <li>Consult a healthcare provider if symptoms last more than 10 days</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="next-steps">
+                                <h3>Recommended Next Steps</h3>
+                                <div class="next-steps-content">
+                                    <div class="next-step-item">
+                                        <div class="step-icon">
+                                            <i class="fas fa-home"></i>
+                                        </div>
+                                        <div class="step-content">
+                                            <h4>Self-Care</h4>
+                                            <p>Based on your symptoms, self-care measures may be appropriate. Rest, stay hydrated, and monitor your symptoms.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="next-step-item">
+                                        <div class="step-icon">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                        <div class="step-content">
+                                            <h4>Routine Appointment</h4>
+                                            <p>Consider scheduling a non-urgent appointment with your healthcare provider within the next few days if symptoms persist.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="results-actions">
+                                <button type="button" class="btn secondary-btn" id="save-results">
+                                    <i class="fas fa-download"></i> Save Results
+                                </button>
+                                <button type="button" class="btn primary-btn" id="restart-checker">
+                                    <i class="fas fa-redo"></i> Start New Assessment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="assessment-info">
+        <div class="container">
+            <div class="info-columns">
+                <div class="info-column">
+                    <div class="info-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Your Privacy</h3>
+                    <p>Your health information is kept completely private and secure. We use advanced encryption to protect all your data.</p>
+                    <a href="privacy-policy.html" class="text-link">View Privacy Policy <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="info-column">
+                    <div class="info-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Our AI Technology</h3>
+                    <p>MediScan AI uses machine learning algorithms trained on extensive medical databases to analyze your symptoms.</p>
+                    <a href="#" class="text-link">Learn How It Works <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="info-column">
+                    <div class="info-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>Need Help?</h3>
+                    <p>If you have any questions about using the symptom checker or interpreting results, our support team is here to help.</p>
+                    <a href="contact.html" class="text-link">Contact Support <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <span class="logo-text">Medi<span class="highlight">Scan</span> AI</span>
+                    </div>
+                    <p>Advanced AI-powered health assessment tool designed to help you understand your symptoms and make informed health decisions.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="symptom-checker.html">Symptom Checker</a></li>
+                        <li><a href="blog.html">Health Blog</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Important Note</h3>
+                    <p>MediScan AI is designed to provide information and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for health tips and updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit" class="btn primary-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MediScan AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
